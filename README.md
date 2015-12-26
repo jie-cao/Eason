@@ -1,4 +1,4 @@
-EASON[中文介绍](Readme_cn.md)
+EASON[中文介绍](README_cn.md)
 =========
 EASON = Easy JSON. It simplifies JSON deserialization in Swift.  It provides:  
 
