@@ -19,6 +19,6 @@ class Tweet: NSObject, JSONSerialization {
         self.text =? jsonObject["text"]
         self.createdAt = JSONObject.dateTransformer(jsonObject["created_at"], dateFormatter: "EEE MMM dd HH:mm:ss Z yyyy")
         
-        self.user = JSONObject.objectTransformer(jsonObject["user"])
+        self.user =? jsonObject["user"]
     }
 }

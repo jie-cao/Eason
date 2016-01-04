@@ -31,7 +31,8 @@ class CustomObjectTransformTest: XCTestCase {
             }
             let jsonObject = JSONObject(data:data)
             
-            let tweets:[Tweet]? = JSONObject.arrayTransformer(jsonObject)
+            var tweets:[Tweet]? = nil
+            tweets =? jsonObject
             if let tweetsArray = tweets{
                 XCTAssertEqual(240558470661799936, tweetsArray[0].id)
                 XCTAssertEqual("just another test", tweetsArray[0].text)

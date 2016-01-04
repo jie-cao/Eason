@@ -22,7 +22,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if let file = NSBundle(forClass:AppDelegate.self).pathForResource("twitter", ofType: "json") {
             let data = NSData(contentsOfFile: file)!
             let jsonObject = JSONObject(data:data)
-            viewController.tweets = JSONObject.arrayTransformer(jsonObject)
+            viewController.tweets =? jsonObject
         }
         
         return true

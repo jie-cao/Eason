@@ -151,28 +151,33 @@ class TweetUser: NSObject, JSONSerialization {
     }
 }
 ```
-```JSONObject.arrayTransformer``` 
+#### 使用```JSONObject.arrayTransformer```函数
 除了Dictionary的结构，JSON数据或者它的子结构也会是Array结构。如果想要将Array转换成自定类的一个Array，可以使用```JSONObject.arrayTransformer``` 函数。下面的一个例子是将一个包含Tweets的JSON数据转换成一个自定义的Tweet的Array。
 ```swift
 var tweets = JSONObject.arrayTransformer(jsonObject["tweets"])
 ```
 利用```JSONObject.arrayTransformer``` 和```JSONObject.objectTransformer``` ，可以将JSON数据结构转换成各个自定义的复杂或者简单的类。关于将JSON数据结构转换成自定义类的复杂引用，请参考Demo的项目中的基于Twitter的JSON Response的例子。  
 
+**下面我会会介绍几个自定义的操作符来使这一过程更加简化**。
+
 ### 使用自定义操作符: =~ =? =!
 我们主要上面的例子中，我们要访问JSONObject中的int或者string值来给赋值给自定义类中的property。EASON提供了几个自定义的操作符来大大简化这一过程。下面是这些操作符的定义:
 
-1. =~ 操作符
+1. =~ 操作符  
 这个operator的作用就是将一个JSONObject的对象转换成operator左边的类对象。但是如果这个JSONObject对象不能转换成指定的类，这个操作符不会进行任何动作。  
 当左边的类是一个non-optional的类T时，使用这个操作符。
 
-2. =? operator
+2. =? 操作符  
 这个operator的作用就是将一个JSONObject的对象转换成operator左边的类对象。但是如果这个JSONObject对象不能转换成指定的类，这个操作符会将左边的对象设置成nil。  
 当左边的类是一个optional的类T？时，使用这个操作符。
 
-3. =! operator
+3. =! 操作符  
 这个operator的作用就是将一个JSONObject的对象转换成operator左边的类对象。但是如果这个JSONObject对象不能转换成指定的类，这个操作符会返回这个类的指定default值。  
 这个操作符可以用在任何T，T？和T！类。
+因为无法的事用户自定义的类的default值，所以=！操作符无法运用在用户自定义的类上。可以用=？或者=~来实现转换功能。  
+
 使用上面这个几个操作符，可以大大简化从JSONObject到自定义类的转换过程。例如上面的例子可以简化为下面的代码：
+
 ```swift
 class Tweet: NSObject, JSONSerialization {
     var id:Int?
@@ -183,14 +188,16 @@ class Tweet: NSObject, JSONSerialization {
     required init?(jsonObject: JSONObject) {
         self.id =? jsonObject["id"]
         self.text =? jsonObject["text"]
-        self.createdAt = JSONObject.dateTransformer(jsonObject["created_at"], dateFormatter: "EEE MMM dd HH:mm:ss Z yyyy")
+        self.user =? jsonObject["user"]
         
-        self.user = JSONObject.objectTransformer(jsonObject["user"])
+        // Use custom transformer to convert string to NSDate
+        self.createdAt = JSONObject.dateTransformer(jsonObject["created_at"], dateFormatter: "EEE MMM dd HH:mm:ss Z yyyy")
+
     }
 }
-```  
-```swift
+```
 
+```swift
 class TweetUser: NSObject, JSONSerialization {
     var id:Int?
     var name:String?
@@ -198,11 +205,10 @@ class TweetUser: NSObject, JSONSerialization {
     required init?(jsonObject: JSONObject) {
         self.name =? jsonObject["name"]
         self.id =? jsonObject["id"]
-        self.profile_image_url = jsonObject["profile_image_url"].URL
+        self.profile_image_url =? jsonObject["profile_image_url"]
     }
 }
 ``` 
-
 ## Licenses
 
 All source code is licensed under the [MIT License](https://raw.github.com/rs/SDWebImage/master/LICENSE).

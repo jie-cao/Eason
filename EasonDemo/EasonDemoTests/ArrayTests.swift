@@ -42,7 +42,8 @@ class ArrayTests: XCTestCase {
             }
             let jsonObject = JSONObject(data:data)
             
-            let tweets:[Tweet]? = JSONObject.arrayTransformer(jsonObject)
+            var tweets:[Tweet]? = nil
+            tweets =? jsonObject
             if let tweetsArray = tweets{
                 for tweet in tweetsArray{
                     XCTAssertNotNil(tweet.id)

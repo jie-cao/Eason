@@ -354,6 +354,29 @@ associativity right
 precedence 90
 }
 
+// Converts the JSONObject to an instance custom objects. The custom objects must conforms to JSONSerialization protocol(can be initialized from an instance of JSONObject)
+public func =~ <T:JSONSerialization>(inout lhs:T, jsonObject: JSONObject) {
+    let object = T(jsonObject: jsonObject)
+    if object != nil {
+        lhs = object!
+    }
+}
+
+// Converts the JSONObject to an array of custom objects. The custom objects must conforms to JSONSerialization protocol(can be initialized from an instance of JSONObject)
+public func =~ <T:JSONSerialization>(inout lhs:[T], jsonObject: JSONObject) {
+    // differentiate between empty and non-existent array
+    if jsonObject.array != nil {
+        var transformedObjectsArray: [T] = []
+        for element in jsonObject {
+            if let newelement = T(jsonObject: element) {
+                transformedObjectsArray.append(newelement)
+            }
+        }
+        
+        lhs = transformedObjectsArray
+    }
+}
+
 /// If the JSONObject instance can be converted to the given class T, assign the instance object with class T with the converted value.
 /// The operator will do nothing if the JSONObject instance cannot be converted to an object with the given class.
 public func =~ <T: Any>(inout lhs: T, jsonObject: JSONObject) {
@@ -371,6 +394,30 @@ Use this operator to covert the JSONObject instance to optional Type T?
 infix operator =? {
 associativity right
 precedence 90
+}
+
+// Converts the JSONObject to an instance custom objects. The custom objects must conforms to JSONSerialization protocol(can be initialized from an instance of JSONObject)
+public func =? <T:JSONSerialization>(inout lhs:T?, jsonObject: JSONObject) {
+    lhs = T(jsonObject: jsonObject)
+}
+
+// Converts the JSONObject to an array of custom objects. The custom objects must conforms to JSONSerialization protocol(can be initialized from an instance of JSONObject)
+public func =? <T:JSONSerialization>(inout lhs:[T]?, jsonObject: JSONObject) {
+    // differentiate between empty and non-existent array
+    if jsonObject.array == nil {
+        lhs = nil
+    }
+    
+    var transformedObjectsArray: [T] = []
+    for element in jsonObject {
+        if let newelement = T(jsonObject: element) {
+            transformedObjectsArray.append(newelement)
+        } else {
+            lhs = nil
+        }
+    }
+    
+    lhs = transformedObjectsArray
 }
 
 /// If the JSONObject instance can be converted to the given class T?, assign the instance object with class T with the converted value.

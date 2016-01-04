@@ -144,6 +144,7 @@ The ```JSONObject.dateTransformer``` method is a helper class to convert string 
 Noticed that the ```user``` property in ```Tweet``` class is also a user-defined class instance to the the field to a ```TweetUser``` instance.  
 
 The```TweetUser```class needs to implement```JSONSerialization ```protocol as well.  After that, you can use the helper method  ```JSONObject.objectTransformer``` to transform the ```user```field to ```user```with ```TweetUser```class. The ```TweetUser``` class is defined as follows:
+
 ```swift
 class TweetUser: NSObject, JSONSerialization {
     var id:Int?
@@ -158,30 +159,35 @@ class TweetUser: NSObject, JSONSerialization {
 ```
 In some cases, you want to convert the sub-fields in a JSON response into an array of user-defined class objects. You can use the ```JSONObject.arrayTransformer``` helper method to achieve this.
 For example, if you want to convert a sub-field in a JSON response to an Array of [Tweet] object, you can use the following command
+
 ```swift
 var tweets = JSONObject.arrayTransformer(jsonObject["tweets"])
 ```
 
 Follow this pattern, the JSON response can be transformed into user-defined class with multiple layers. Please see the examples for deserialize tweets from a sample response from Twitter in the Demo project.
 
+**In the next section, we will use custom operators to simplies this process.**
+
 ### Using custom operators: =~ =? =!
 Noticed that in the previous section, we need to decide whether we need to assign string or int value for fields in the class. You can simplify this by using the following custom operators. Their definitions are:  
 
-1. =~ operator
+1. =~ operator  
 If the JSONObject instance can be converted to the given class, assign the instance object with class with the converted value.
 The operator will do nothing if the JSONObject instance cannot be converted to an object with the given class. Use the operator to convert the JSONOjbect instance to any non-optional type T
 
-2. =? operator
+2. =? operator  
 If the JSONObject instance can be converted to the given class, assign the instance object with class with the converted value.
 The operator will assign the the left hand side objet to nil if the JSONObject instance cannot be converted to an object with the given class.
 Use this operator to covert the JSONObject instance to any optional Type T?
 
-3. =! operator
+3. =! operator  
  If the JSONObject instance can be converted to the given class, assign the instance object with class with the converted value.
 The operator will assign the the left hand side objet to the default value of for the given class. If the JSONObject instance cannot be converted to an object with the given class.
 This operator can be used to convert the JSONObject intance to any type T, T? or T!
+Since EASON does not know the default value for user-defined class, =! cannot be used for user-defined class. You can use =? or =~ for the conversion.
 
 Using the custom operators, the transformation process in the previous section can be simplified as follows:
+
 ```swift
 class Tweet: NSObject, JSONSerialization {
     var id:Int?
@@ -192,14 +198,18 @@ class Tweet: NSObject, JSONSerialization {
     required init?(jsonObject: JSONObject) {
         self.id =? jsonObject["id"]
         self.text =? jsonObject["text"]
-        self.createdAt = JSONObject.dateTransformer(jsonObject["created_at"], dateFormatter: "EEE MMM dd HH:mm:ss Z yyyy")
+        self.user =? jsonObject["user"]
         
-        self.user = JSONObject.objectTransformer(jsonObject["user"])
+        // Use custom transformer to convert string to NSDate
+        self.createdAt = JSONObject.dateTransformer(jsonObject["created_at"], dateFormatter: "EEE MMM dd HH:mm:ss Z yyyy")
+
     }
 }
-```  
-```swift
+```
 
+  
+
+```swift
 class TweetUser: NSObject, JSONSerialization {
     var id:Int?
     var name:String?
@@ -207,7 +217,7 @@ class TweetUser: NSObject, JSONSerialization {
     required init?(jsonObject: JSONObject) {
         self.name =? jsonObject["name"]
         self.id =? jsonObject["id"]
-        self.profile_image_url = jsonObject["profile_image_url"].URL
+        self.profile_image_url =? jsonObject["profile_image_url"]
     }
 }
 ``` 
