@@ -12,7 +12,7 @@ Installation
 ------------
 
 ### CocoaPods (iOS 8+)
-You can use Cocoapods to install EASON adding it to your Podfile:
+You can use CocoaPods to install EASON adding it to your Podfile:
 
 
 #### Podfile
