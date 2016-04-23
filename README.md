@@ -1,4 +1,4 @@
-EASON[中文介绍](README_cn.md)
+Eason[中文介绍](README_cn.md)
 =========
 EASON = Easy JSON. It simplifies JSON deserialization in Swift.  It provides:  
 
@@ -19,12 +19,12 @@ You can use Cocoapods to install EASON adding it to your Podfile:
 ```
 platform :ios, '8.0'
 use_frameworks!
-pod 'EASON'
+pod 'Eason'
 ```
 In the project, you can import the EASON framework  
 
 ```swift
-import EASON
+import Eason
 ```  
 
 ### Manually

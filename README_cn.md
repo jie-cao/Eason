@@ -1,11 +1,11 @@
-EASON
+Eason
 =========
-EASON = Easy JSON. 使用EASON能大大简化在Swift中处理JSON数据结构和从JSON数据结构到各种类的转换的各种操作。EASON包括了:  
+Eason = Easy JSON. 使用EASON能大大简化在Swift中处理JSON数据结构和从JSON数据结构到各种类的转换的各种操作。Eason包括了:  
 - 一个JSONObject结构用来简化和优化对JSON数据结构的操作访问
 - 将JSON的各种数据结构如String, Array和Dictionary 转换成JSONObject结构以便对JSON数据进行各种操作
 - 一系列的工具函数和protocols来将JSONObject结构转换成自己定义的class对象
 - 一套自定的operator来优化JSONObject和自定义类转换的操作
-- EASON的JSON到自定义类的转换的performance优于现在流行的swift的JSON处理框架
+- Eason的JSON到自定义类的转换的performance优于现在流行的swift的JSON处理框架
 
 安装
 ------------
@@ -17,22 +17,22 @@ EASON = Easy JSON. 使用EASON能大大简化在Swift中处理JSON数据结构�
 ```
 platform :ios, '8.0'
 use_frameworks!
-pod 'EASON'
+pod 'Eason'
 ```
 在Project当中import:
 
 ```swift
-import EASON
+import Eason
 ```  
 
 ### 直接嵌入源代码
-EASON是一个开源库，可以从[这里](https://github.com/jie-cao/EASON).直接找到源代码并加入项目。EASON是一个非常轻量级的框架，唯一需要嵌入项目的源代码文件是`EASON.swift` 
+Eason是一个开源库，可以从[这里](https://github.com/jie-cao/EASON).直接找到源代码并加入项目。EASON是一个非常轻量级的框架，唯一需要嵌入项目的源代码文件是`EASON.swift` 
 
 如何使用
 ----------
 
 ### 使用 JSONObject
-在安装EASON到你的项目后，你可以通过下面这些方法来把Array，Dictionary，String或者NSData转换成一个JSONObject结构的对象。在转换成JSONObject后，你可以通过下面这些方法来访问JSON数据结构中个各个对象：
+在安装Eason到你的项目后，你可以通过下面这些方法来把Array，Dictionary，String或者NSData转换成一个JSONObject结构的对象。在转换成JSONObject后，你可以通过下面这些方法来访问JSON数据结构中个各个对象：
 将Dictionary转换成JSONObject并访问JSONObject对象:
 ```swift
 let object = ["name": "Hello", "id": 123]
