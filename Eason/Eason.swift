@@ -623,7 +623,6 @@ public extension JSONObject{
         }
         return nil
     }
-    
 }
 
 // Default value for types
